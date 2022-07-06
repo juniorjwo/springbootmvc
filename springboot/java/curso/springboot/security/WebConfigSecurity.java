@@ -26,9 +26,13 @@ public class WebConfigSecurity  extends WebSecurityConfigurerAdapter{
 		.authorizeRequests() // permitir restringir acessos
 		.antMatchers(HttpMethod.GET, "/").permitAll() // qualquer usuario acessa a pagina inicial do sistema
 		.antMatchers(HttpMethod.GET, "/cadastropessoa").hasAnyRole("ADMIN") // PODE TIRAR O ROLE_ QUE O SPRING ENTENDE
+		.antMatchers("**/materialize/**").permitAll()
 		.anyRequest().authenticated()
 		.and().formLogin().permitAll() // permitir qualquer usuario ao formulario de login, cria um form login padrao
-		.and().logout() // mapeia url de logout e invalida usuario autenticado
+		.loginPage("/login")
+		.defaultSuccessUrl("/cadastropessoa")
+		.failureUrl("/login?error=true")
+		.and().logout().logoutSuccessUrl("/login") // mapeia url de logout e invalida usuario autenticado
 		.logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
 	}
 	
@@ -47,6 +51,12 @@ public class WebConfigSecurity  extends WebSecurityConfigurerAdapter{
 	
 	@Override // ignora url especificas
 	public void configure(WebSecurity web) throws Exception {
-		web.ignoring().antMatchers("/materialize/**");
+
+	          web.ignoring().antMatchers("/materialize/**");
+	         
+
 	}
+
+
+
 }

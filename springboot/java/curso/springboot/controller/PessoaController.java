@@ -70,6 +70,8 @@ public class PessoaController {
 		Iterable<Pessoa> pessoIt = pessoaRepository.findAll();
 		andView.addObject("pessoas", pessoIt);
 		andView.addObject("pessoaobj", new Pessoa());
+		andView.addObject("msg", "Usuário Salvo com Sucesso!");
+		
 		return andView;
 	}
 
@@ -103,14 +105,11 @@ public class PessoaController {
 	public ModelAndView pesquisar(@RequestParam("nomepesquisa") String nomepesquisa) {
 		ModelAndView modelAndView = new ModelAndView("cadastro/cadastropessoa");
 		List<Pessoa> pessoas = pessoaRepository.findPessoaByName(nomepesquisa);
-		Comparator<Pessoa> ordenaPessoaId = new Comparator<Pessoa>() {
-			@Override
-			public int compare(Pessoa o1, Pessoa o2) {
+		Comparator<Pessoa> ordenaPessoaId = ( o1,o2)-> (o1.getNome().compareTo(o2.getNome())); // expressao lambda para reduzir a comparacao
 				// TODO Auto-generated method stub
-				return o1.getId().compareTo(o2.getId());
-			}
-		};
+//				return Integer.valueOf(o1.getIdade()).compareTo(Integer.valueOf(o2.getIdade()));
 		Collections.sort(pessoas, ordenaPessoaId);
+		pessoas.sort(ordenaPessoaId);
 		modelAndView.addObject("pessoas", pessoas);
 		modelAndView.addObject("pessoaobj", new Pessoa());
 		return modelAndView;

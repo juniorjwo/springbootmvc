@@ -20,7 +20,8 @@ public interface PessoaRepository extends CrudRepository<Pessoa, Long> {
 //}
 	/*Busca por nome maiusculo ou minusculo*/
 	@Query("select p from Pessoa p where upper(p.nome) like upper(concat('%', ?1,'%')) order by p.id")
-	 List<Pessoa> findPessoaByName(String nome);
+	
+	List<Pessoa> findPessoaByName(String nome);
 }
 
 
